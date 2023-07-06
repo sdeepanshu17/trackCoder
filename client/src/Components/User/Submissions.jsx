@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Icon, makeStyles, Paper, Table, TableBody, Typography, TableCell, TableContainer, TableHead, TablePagination, TableRow, CircularProgress } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
@@ -8,7 +8,7 @@ import codechef from "../../assets/codechef-svgrepo-com.svg"
 import atcoder from "../../assets/atcoder.png"
 import { useSelector } from 'react-redux';
 
-const useStyles = makeStyles((theme)=>({
+const useStyles = makeStyles((theme) => ({
     imageIcon: {
         height: 28,
         width: 28,
@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme)=>({
         padding: '20px',
         borderRadius: '15px',
         height: '39vh',
-        width: '100vw'
+        width: '100%'
     },
     tablePaper: {
         width: '100%',
@@ -50,19 +50,19 @@ const useStyles = makeStyles((theme)=>({
 }))
 
 
-const columns = [
-    { id: 'oj', label: 'Website' },
-    { id: 'problem', label: 'Problem' },
-    { id: 'verdict', label: 'Verdict' },
-    { id: 'submissionUrl', label: 'Submission' },
-    { id: 'submissionTime', label: 'Submission Time' },
-];
-
 export default function Submissions(props) {
     const classes = useStyles();
-    const { rows } = props;
-    const {isLoading} = useSelector((state)=>state.auth);
-    // console.log(rows1);
+    const { rows, multipleUsers } = props;
+    const { isLoading } = useSelector((state) => state.auth);
+    console.log(rows);
+
+    let columns = [
+        (multipleUsers ? { id: 'username', label: 'Username' } : { id: 'oj', label: 'Profile' }),
+        { id: 'problem', label: 'Problem' },
+        { id: 'verdict', label: 'Verdict' },
+        { id: 'submissionUrl', label: 'Submission' },
+        { id: 'submissionTime', label: 'Submission Time' }
+    ];
 
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -116,14 +116,20 @@ export default function Submissions(props) {
                             .map((row) => {
                                 return (
                                     <TableRow hover role="checkbox" tabIndex={-1} key={row.timestamp}>
-                                        <TableCell key="oj" >
-                                            <Icon component={Link} to={row.profileUrl} target={"_blank"} classes={{root: classes.iconRoot}}>
-                                                {row["oj"]==="atcoder" && <img className={classes.imageIcon} src={atcoder} />}
-                                                {row["oj"]==="codeforces" && <img className={classes.imageIcon} src={codeforces} />}
-                                                {row["oj"]==="leetcode" && <img className={classes.imageIcon} src={leetcode} />}
-                                                {row["oj"]==="codechef" && <img className={classes.imageIcon} src={codechef} />}
-                                            </Icon>
-                                        </TableCell>
+                                        {multipleUsers ?
+                                            <TableCell key="username" >
+                                                <Typography className={classes.tableCellLink} component={Link} to={row.profileUrl2}>{row["username"]}</Typography>
+                                            </TableCell>
+                                            :
+                                            <TableCell key="oj" >
+                                                <Icon component={Link} to={row.profileUrl} target={"_blank"} classes={{ root: classes.iconRoot }}>
+                                                    {row["oj"] === "atcoder" && <img className={classes.imageIcon} src={atcoder} />}
+                                                    {row["oj"] === "codeforces" && <img className={classes.imageIcon} src={codeforces} />}
+                                                    {row["oj"] === "leetcode" && <img className={classes.imageIcon} src={leetcode} />}
+                                                    {row["oj"] === "codechef" && <img className={classes.imageIcon} src={codechef} />}
+                                                </Icon>
+                                            </TableCell>
+                                        }
                                         <TableCell key="problem" >
                                             <Typography className={classes.tableCellLink} component={Link} to={row.problemUrl} target={"_blank"}>{row["problem"]}</Typography>
                                         </TableCell>
@@ -157,4 +163,5 @@ export default function Submissions(props) {
 
 Submissions.propTypes = {
     rows: PropTypes.array,
+    multipleUsers: PropTypes.bool,
 }

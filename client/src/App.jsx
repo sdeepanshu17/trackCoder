@@ -9,6 +9,7 @@ import { ToastContainer } from "react-toastify";
 import Dashboard from "./Components/Dashboard/Dashboard";
 import User from "./Components/User/User";
 import Account from "./Components/Account/Account";
+import Friends from "./Components/Friends/Friends";
 
 const useStyles = makeStyles({
   root: {
@@ -23,7 +24,7 @@ function App() {
   return (
     <BrowserRouter>
     <Box className={classes.root}>
-      <Container>
+      <Container style={{padding: 0}}>
         <Navbar />
         <ToastContainer autoClose={2000} />
           <Routes>
@@ -32,6 +33,7 @@ function App() {
             <Route path="/dashboard" exact element={<Dashboard />} />
             <Route path="/users/:username" exact element={<User />} />
             <Route path="/account" exact element={<Account />} />
+            <Route path="/friends" exact element={<Friends />} />
           </Routes>
       </Container>
     </Box>

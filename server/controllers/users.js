@@ -74,7 +74,7 @@ export const updateUser = async (req, res) => {
 
 function sortByOjProperty(objectsArray) {
     objectsArray.sort((a, b) => {
-        return b.timestamp-a.timestamp;
+        return b.timestamp - a.timestamp;
     });
 
     return objectsArray;
@@ -115,17 +115,17 @@ export const getUserSubmissions = async (req, res) => {
         let index = 0;
         if (codeforces) {
             // https://codeforces.com/contest/1132/submission/211390463
-            const updatedArray = ans[index].data.result.map(obj => ({ oj: 'codeforces', problem: obj.problem.name, verdict: obj.verdict, submissionUrl: `https://codeforces.com/contest/${obj.problem.contestId}/submission/${obj.id}`, problemUrl: `https://codeforces.com/contest/${obj.problem.contestId}/problem/${obj.problem.index}`, profileUrl: `https://codeforces.com/profile/${codeforces}`, timestamp: obj.creationTimeSeconds }));
+            const updatedArray = ans[index].data.result.map(obj => ({ oj: 'codeforces', problem: obj.problem.name, verdict: obj.verdict, submissionUrl: `https://codeforces.com/contest/${obj.problem.contestId}/submission/${obj.id}`, problemUrl: `https://codeforces.com/contest/${obj.problem.contestId}/problem/${obj.problem.index}`, profileUrl: `https://codeforces.com/profile/${codeforces}`, profileUrl2: `/users/${username}`, timestamp: obj.creationTimeSeconds, username: username }));
             submissions = submissions.concat(updatedArray);
             index++;
         }
         if (leetcode) {
-            const updatedArray = ans[index].data.data.recentAcSubmissionList.map(obj => ({ oj: 'leetcode', problem: obj.title, verdict: 'OK', submissionUrl: `https://leetcode.com/submissions/detail/${obj.id}/`, problemUrl: `https://leetcode.com/problems/${obj.titleSlug}/`, profileUrl: `https://leetcode.com/${leetcode}`, timestamp: parseInt(obj.timestamp) }));
+            const updatedArray = ans[index].data.data.recentAcSubmissionList.map(obj => ({ oj: 'leetcode', problem: obj.title, verdict: 'OK', submissionUrl: `https://leetcode.com/submissions/detail/${obj.id}/`, problemUrl: `https://leetcode.com/problems/${obj.titleSlug}/`, profileUrl: `https://leetcode.com/${leetcode}`, profileUrl2: `/users/${username}`, timestamp: parseInt(obj.timestamp), username: username }));
             submissions = submissions.concat(updatedArray);
             index++;
         }
         if (atcoder) {
-            const updatedArray = ans[index].data.map(obj => ({ oj: 'atcoder', problem: obj.problem_id, verdict: obj.result, submissionUrl: `https://atcoder.jp/contests/${obj.contest_id}/submissions/${obj.id}`, problemUrl: `https://atcoder.jp/contests/${obj.contest_id}/tasks/${obj.problem_id}`, profileUrl: `https://atcoder.jp/users/${codeforces}`, timestamp: obj.epoch_second }));
+            const updatedArray = ans[index].data.map(obj => ({ oj: 'atcoder', problem: obj.problem_id, verdict: obj.result, submissionUrl: `https://atcoder.jp/contests/${obj.contest_id}/submissions/${obj.id}`, problemUrl: `https://atcoder.jp/contests/${obj.contest_id}/tasks/${obj.problem_id}`, profileUrl: `https://atcoder.jp/users/${codeforces}`, profileUrl2: `/users/${username}`, timestamp: obj.epoch_second, username: username }));
             submissions = submissions.concat(updatedArray);
             index++;
         }
@@ -151,10 +151,34 @@ export const getUserSubmissions = async (req, res) => {
         // }
 
         // console.log(ans[index]);
-        
+
         sortByOjProperty(submissions);
         res.status(200).json({ result: submissions });
     } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Something went wrong" });
+    }
+}
+
+export const getFriendsSubmissions = async (req, res) => {
+    const { username } = req.params;
+    try {
+        const existingUser = await User.findOne({ username });
+        if (!existingUser) return res.status(400).json({ message: "User not found!" });
+
+        const friends = existingUser.friends;
+        let submissions = [];
+        for (let friend of friends) {
+            // console.log(friend);
+            const API = axios.create({ baseURL: 'http://localhost:5001/' });
+            let {data} = await API.get(`/users/submissions/${friend}`);
+            submissions = submissions.concat(data.result);
+            // console.log(res);
+        }
+        sortByOjProperty(submissions);
+        res.status(200).json({result: submissions});
+    }
+    catch (error) {
         console.log(error);
         res.status(500).json({ message: "Something went wrong" });
     }

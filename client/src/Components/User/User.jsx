@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
             borderColor: "#0F1B4C",
         },
     },
-}))
+}));
 
 const User = () => {
     const classes = useStyles();
@@ -160,7 +160,7 @@ const User = () => {
                         />
                     </Grid>
                     <Typography className={classes.title}>Recent Submissions</Typography>
-                    <Submissions rows={userSubms} />
+                    <Submissions multipleUsers={false} rows={userSubms} />
                 </Grid>
             </Container>
         </Box>

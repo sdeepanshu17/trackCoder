@@ -1,5 +1,5 @@
 import * as api from "../api/userDetails";
-import { AUTH, END_LOADING, START_LOADING, UPDATE, USERDETAILS, SET_USER_SUB } from "../constants/actionTypes";
+import { AUTH, END_LOADING, START_LOADING, UPDATE, USERDETAILS, SET_USER_SUB, SET_FRND_SUB } from "../constants/actionTypes";
 // import {toast} from 'react-toastify'
 // import 'react-toastify/dist/ReactToastify.css';
 
@@ -57,6 +57,18 @@ export const getUserSubmission = (username) => async(dispatch) => {
         dispatch({type: START_LOADING});
         const {data} = await api.userSubmissions(username);
         dispatch({ type: SET_USER_SUB, payload: data?.result });
+        dispatch({type: END_LOADING});
+    } catch (error) {
+        dispatch({type: END_LOADING});
+        console.log(error);
+    }
+}
+
+export const getFriendsSubmissions = (username) => async(dispatch) => {
+    try {
+        dispatch({type: START_LOADING});
+        const {data} = await api.friendsSubmissions(username);
+        dispatch({ type: SET_FRND_SUB, payload: data?.result });
         dispatch({type: END_LOADING});
     } catch (error) {
         dispatch({type: END_LOADING});

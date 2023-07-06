@@ -14,3 +14,4 @@ export const SET_CC_PROF = "SET_CC_PROF";
 export const SET_AC_PROF = "SET_AC_PROF";
 
 export const SET_USER_SUB = "SET_USER_SUB";
+export const SET_FRND_SUB = "SET_FRND_SUB";

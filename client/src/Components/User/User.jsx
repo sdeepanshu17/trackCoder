@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom"
-import { getACProfile, getCCProfile, getCFProfile, getCFSubmissions, getLCProfile } from "../../actions/profiles";
+import { getACProfile, getCCProfile, getCFProfile, getCFSubmissions, getLCProfile, logout } from "../../actions/profiles";
 import { useDispatch, useSelector } from "react-redux";
 import { Box, Button, CircularProgress, Container, Grid, Paper, Typography, makeStyles } from "@material-ui/core";
 import { getUserDetails, getUserSubmission } from "../../actions/auth";
@@ -68,6 +68,7 @@ const User = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
+        dispatch(logout());
         dispatch(getUserDetails(username));
         dispatch(getUserSubmission(username));
     }, [username]);

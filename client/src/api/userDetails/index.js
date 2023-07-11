@@ -8,3 +8,5 @@ export const getUserDetails = (username) => API.get(`/users/${username}`);
 export const updateUserDetails = (username, formData) => API.patch(`/users/update/${username}`,formData);
 export const userSubmissions = (username) => API.get(`/users/submissions/${username}`);
 export const friendsSubmissions = (username) => API.get(`/users/friendsubmissions/${username}`);
+export const friends = (username) => API.get(`/users/friends/${username}`);
+export const removeFriend = (username,friendUsername) => API.delete(`/users/${username}/friends/${friendUsername}`);

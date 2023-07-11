@@ -2,7 +2,7 @@ import * as cfapi from "../api/profiles/codeforces";
 import * as lcapi from "../api/profiles/leetcode";
 import * as ccapi from "../api/profiles/codechef";
 import * as acapi from "../api/profiles/atcoder";
-import { START_LOADING, END_LOADING, SET_CF_PROF, SET_CF_SUB, SET_LC_SUB, SET_LC_PROF, SET_CC_PROF, SET_AC_PROF } from "../constants/actionTypes";
+import { START_LOADING, END_LOADING, SET_CF_PROF, SET_CF_SUB, SET_LC_SUB, SET_LC_PROF, SET_CC_PROF, SET_AC_PROF, CLEAR_PROFILES } from "../constants/actionTypes";
 import cheerio from "cheerio";
 
 export const getCFSubmissions = (cfUsername) => async (dispatch) => {
@@ -78,6 +78,14 @@ export const getACProfile = (acUsername) => async (dispatch) => {
         const acData = {username, rating, maxRating, globalRank, fullySolvedCount};
         dispatch({ type: SET_AC_PROF, payload: acData });
         dispatch({type: END_LOADING});
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const logout = () =>async(dispatch) => {
+    try {
+        dispatch({ type: CLEAR_PROFILES, data: null });
     } catch (error) {
         console.log(error);
     }

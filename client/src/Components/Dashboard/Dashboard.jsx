@@ -3,8 +3,8 @@ import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { UpcomingContests } from './UpcomingContests';
 import { FriendsSubmisions } from './FriendsSubmissions';
-import { useDispatch, useSelector } from 'react-redux';
-import { getFriendsSubmissions } from '../../actions/auth';
+// import { useDispatch, useSelector } from 'react-redux';
+// import { getFriendsSubmissions } from '../../actions/auth';
 
 const useStyles = makeStyles((theme) => ({
   loadingPaper: {

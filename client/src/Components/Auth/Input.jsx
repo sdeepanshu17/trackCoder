@@ -26,4 +26,4 @@ const Input = ({name, handleChange, label, autoFocus, type, handleShowPassword, 
   )
 }
 
-export default Input
+export default Input;

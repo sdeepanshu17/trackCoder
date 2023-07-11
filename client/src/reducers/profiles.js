@@ -1,11 +1,13 @@
-import { END_LOADING, SET_AC_PROF, SET_CC_PROF, SET_CF_PROF, SET_CF_SUB, SET_FRND_SUB, SET_LC_PROF, SET_LC_SUB, SET_USER_SUB, START_LOADING } from "../constants/actionTypes";
+import { CLEAR_PROFILES, END_LOADING, SET_AC_PROF, SET_CC_PROF, SET_CF_PROF, SET_CF_SUB, SET_FRNDS, SET_FRND_SUB, SET_LC_PROF, SET_LC_SUB, SET_USER_SUB, START_LOADING } from "../constants/actionTypes";
 
-export default (state={cfProfile: null, cfData: [], lcProfile: null, lcData: [], ccProfile: null, acProfile: null, userSubms: [], frndsSubms: [], isLoading: false},action) => {
+export default (state={cfProfile: null, cfData: [], lcProfile: null, lcData: [], ccProfile: null, acProfile: null, userSubms: [], frndsSubms: [], frnds: [], isLoading: false},action) => {
     switch (action.type) {
         case START_LOADING:
             return { ...state, isLoading: true, };
         case END_LOADING:
             return { ...state, isLoading: false,};
+        case CLEAR_PROFILES:
+            return {cfProfile: null, cfData: [], lcProfile: null, lcData: [], ccProfile: null, acProfile: null, userSubms: [], frndsSubms: [], isLoading: false};
         case SET_CF_PROF:
             // console.log(action.payload);
             return {...state, cfProfile: action.payload};
@@ -28,8 +30,11 @@ export default (state={cfProfile: null, cfData: [], lcProfile: null, lcData: [],
             // console.log(action.payload);
             return {...state, userSubms: action.payload};
         case SET_FRND_SUB:
-            console.log(action.payload);
+            // console.log(action.payload);
             return {...state, frndsSubms: action.payload};
+        case SET_FRNDS:
+            // console.log(action.payload);
+            return {...state, frnds: action.payload};
         default:
             return state;
     }

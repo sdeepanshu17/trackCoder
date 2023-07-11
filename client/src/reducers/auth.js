@@ -1,4 +1,4 @@
-import { AUTH, END_LOADING, LOGOUT, START_LOADING, UPDATE, USERDETAILS } from "../constants/actionTypes";
+import { AUTH, END_LOADING, LOGOUT, REMOVE_FRND, START_LOADING, UPDATE, USERDETAILS } from "../constants/actionTypes";
 
 export default (state={authData: null, isLoading: false},action) => {
     switch (action.type) {
@@ -15,6 +15,8 @@ export default (state={authData: null, isLoading: false},action) => {
             localStorage.clear();
             return {...state,authData: null};
         case USERDETAILS:
+            return {...state, user: action?.data};
+        case REMOVE_FRND:
             return {...state, user: action?.data};
         case UPDATE:
             localStorage.clear();

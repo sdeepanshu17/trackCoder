@@ -23,10 +23,11 @@ function App() {
   const classes = useStyles();
   return (
     <BrowserRouter>
-    <Box className={classes.root}>
-      <Container style={{padding: 0}}>
-        <Navbar />
+    <Box className={classes.root} style={{padding: 0}}>
+      <Container maxWidth={false} style={{padding: 0}}>
+          <Navbar />
         <ToastContainer autoClose={2000} />
+        <Container>
           <Routes>
             <Route path="/" exact element={<Hero />} />
             <Route path="/auth" exact element={<Auth />} />
@@ -35,6 +36,7 @@ function App() {
             <Route path="/account" exact element={<Account />} />
             <Route path="/friends" exact element={<Friends />} />
           </Routes>
+        </Container>
       </Container>
     </Box>
     </BrowserRouter>

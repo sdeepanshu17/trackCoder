@@ -4,7 +4,7 @@ import signUpImg from "../../assets/undraw_sign_up_n6im.svg";
 import { Button, Grid, makeStyles } from "@material-ui/core";
 import { useState } from "react";
 import Input from "./Input";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { signin, signup } from "../../actions/auth";
 import { useNavigate } from "react-router-dom";
 import 'react-toastify/dist/ReactToastify.css';
@@ -78,6 +78,7 @@ const Hero = () => {
     const dispatch = useDispatch();
     const history = useNavigate();
     const [errorMessage,setErrorMessage] = useState('');
+    const {isLoading} = useSelector((state)=>state.auth);
 
     const initialState = {firstName:'',lastName:'',username:'',password:'',confirmPassword:'',};
 
@@ -151,7 +152,10 @@ const Hero = () => {
                     <Input name="password" label="Password" handleChange={handleChange} type={showPassword ? "text" : "password"} handleShowPassword={handleShowPassword} />
                     {isSignup && <Input name="confirmPassword" label="Confirm Password" handleChange={handleChange} type="password" />}
                 </Grid>
-                <Button type="submit" variant="contained" className={classes.submitBtn}>{isSignup ? "Create account" : "Login"}</Button>
+                {isLoading ? 
+                <Button type="submit" variant="contained" className={classes.submitBtn} disabled>{isSignup ? "Creating account..." : "Logging in..."}</Button>
+                : <Button type="submit" variant="contained" className={classes.submitBtn}>{isSignup ? "Create account" : "Login"}</Button>
+                }
                 </form>
             </Box>
         </Box>

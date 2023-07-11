@@ -1,4 +1,4 @@
-import { AppBar, Box, Toolbar, IconButton, Typography, Container, Avatar, Button, Tooltip } from "@material-ui/core"
+import { AppBar, Box, Toolbar, IconButton, Typography, Container, Avatar, Button, Tooltip, useScrollTrigger } from "@material-ui/core"
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import decode from "jwt-decode";
 import { toast } from "react-toastify";
+import { LOGOUT } from "../../constants/actionTypes";
 
 const pages = ['Dashboard', 'Friends'];
 
@@ -122,24 +123,28 @@ function Navbar() {
     const location = useLocation();
     const dispatch = useDispatch();
     const history = useNavigate();
+    const trigger = useScrollTrigger();
 
     const logout = () => {
-        dispatch({ type: "LOGOUT" });
+        dispatch({ type: LOGOUT });
         setUser(null);
         history("/");
     }
     useEffect(() => {
         const token = user?.token;
 
+        
+
         if (token) {
             const decodedToken = decode(token);
+            // setUser(decodedToken);
             if (decodedToken.exp * 1000 < new Date().getTime()) {
                 toast.warn("Session Timed Out!");
                 logout();
             }
         }
 
-        setUser(JSON.parse(localStorage.getItem('profile')));
+        // setUser(JSON.parse(localStorage.getItem('profile')));
     }, [location]);
 
     const handleOpenNavMenu = (event) => {
@@ -158,7 +163,7 @@ function Navbar() {
     };
 
     return (
-        <AppBar elevation={0} className={classes.appBar} position="sticky">
+        <AppBar elevation={trigger ? 4 : 0}  className={classes.appBar} position="sticky">
             <Container className={classes.mainCont}>
                 <Toolbar disableGutters>
                     <Typography component={Link} to="/" variant="h4" className={classes.heading}>track<span style={{ fontWeight: 'bold' }}>Coder</span></Typography>
@@ -187,7 +192,7 @@ function Navbar() {
                         >
                             {pages.map((page) => (
                                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                    <Typography className={classes.navmenuItem} component={Link} to={page} textAlign="center">{page}</Typography>
+                                    <Typography className={classes.navmenuItem} component={Link} to={page}>{page}</Typography>
                                 </MenuItem>
                             ))}
                         </Menu>
@@ -197,9 +202,7 @@ function Navbar() {
                     {user &&
                         <Box sx={{ flexGrow: 1, display: { xs: 'none', sm: 'flex' }, justifyContent: 'flex-end' }}>
                             {pages.map((page) => (
-                                <>
-                                    <Typography className={classes.navbarItem} component={Link} to={page} textAlign="center">{page}</Typography>
-                                </>
+                                <Typography key={page} className={classes.navbarItem} component={Link} to={page}>{page}</Typography>
                             ))}
                         </Box>
                     }
@@ -208,7 +211,7 @@ function Navbar() {
                         <Box sx={{ flexGrow: 0, p: 0 }}>
                             <Tooltip title="Open settings">
                                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                    <Avatar className={classes.icon} alt={user.result.name} src={user.result?.imageUrl}>{user.result.name.charAt(0)}</Avatar>
+                                    <Avatar className={classes.icon} alt={user?.result.name} src={user?.result?.imageUrl}>{user?.result.name.charAt(0)}</Avatar>
                                 </IconButton>
                             </Tooltip>
                             <Menu
@@ -229,8 +232,8 @@ function Navbar() {
                                 onClick={handleCloseUserMenu}
                                 
                             >
-                                <MenuItem onClick={() => history(`/users/${user.result.username}`)}>
-                                    <Avatar className={classes.icon} alt={user.result.name}>{user.result.name.charAt(0)}</Avatar> &nbsp; {user.result.name}
+                                <MenuItem onClick={() => history(`/users/${user?.result.username}`)}>
+                                    <Avatar className={classes.icon} alt={user?.result.name}>{user?.result.name.charAt(0)}</Avatar> &nbsp; {user?.result.name}
                                 </MenuItem>
                                 <Divider />
                                 <MenuItem onClick={() => history("/account")}>

@@ -10,6 +10,19 @@ dotenv.config();
 
 const secret = process.env.SECRET; //secret key for the token generation
 
+export const verifyUser = async (req,res) => {
+    try {
+        const { token } = req.body;
+        const decodedData = jwt.verify(token, secret);
+        const user = await User.findOne({ username: decodedData?.username });
+        if (!user) return res.status(404).json({ message: "User doesn't exist." });
+        res.status(200).json({ result: user });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Something went wrong" });
+    }
+}
+
 export const signin = async (req, res) => {
     const { username, password } = req.body;
     try {
@@ -171,15 +184,49 @@ export const getFriendsSubmissions = async (req, res) => {
         for (let friend of friends) {
             // console.log(friend);
             const API = axios.create({ baseURL: 'http://localhost:5001/' });
-            let {data} = await API.get(`/users/submissions/${friend}`);
+            let { data } = await API.get(`/users/submissions/${friend}`);
             submissions = submissions.concat(data.result);
             // console.log(res);
         }
         sortByOjProperty(submissions);
-        res.status(200).json({result: submissions});
+        res.status(200).json({ result: submissions });
     }
     catch (error) {
         console.log(error);
         res.status(500).json({ message: "Something went wrong" });
+    }
+}
+
+export const getFriends = async (req, res) => {
+    const { username } = req.params;
+    // console.log(username);
+    try {
+        const existingUser = await User.findOne({ username });
+        if (!existingUser) return res.status(400).json({ message: "User not found!" });
+        const friends = existingUser.friends;
+        res.status(200).json({ result: friends });
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Something went wrong" });
+    }
+}
+
+export const removeFriend = async (req, res) => {
+    const { username, friendUsername } = req.params;
+
+    try {
+        const user = await User.findOne({ username });
+        if (!user) { return res.status(404).json({ message: 'User not found' }); }
+
+        const { friends } = user;
+        const friendIndex = friends.indexOf(friendUsername);
+        if (friendIndex === -1) { return res.status(404).json({ message: 'Friend not found in the user\'s friends list' }); }
+        friends.splice(friendIndex, 1);
+        await user.save();
+        res.json({ message: 'Friend removed successfully' });
+        
+    } catch (error) {
+        res.status(500).json({ message: 'Internal server error' });
     }
 }

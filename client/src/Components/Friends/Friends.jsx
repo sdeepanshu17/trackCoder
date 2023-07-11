@@ -58,7 +58,7 @@ const Friends = () => {
                         <SearchUser sx={{ height: '100%' }} style={{}} />
                     </Grid>
                     <Grid item xs={12} sm={12} md={6} lg={6} >
-                        <MyFriends sx={{ height: '100%' }} style={{}} />
+                        <MyFriends username={user?.result?.username} sx={{ height: '100%' }} style={{}} />
                     </Grid>
                 </Grid>
             </Container>

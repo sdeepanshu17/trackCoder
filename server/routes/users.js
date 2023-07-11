@@ -1,15 +1,16 @@
 import express  from "express";
-import { getFriends, getFriendsSubmissions, getUserDetails, getUserSubmissions, removeFriend, signin, signup, updateUser, verifyUser } from "../controllers/users.js";
+import { getFriends, getFriendsSubmissions, getUserDetails, getUserSubmissions, searchUser, signin, signup, toggleFriend, updateUser } from "../controllers/users.js";
 
 const router = express.Router();
 
-router.get("/:username", getUserDetails);
+router.get("/friendsubmissions", getFriendsSubmissions);
 router.get("/submissions/:username", getUserSubmissions);
-router.get("/friends/:username", getFriends);
-router.get("/friendsubmissions/:username", getFriendsSubmissions);
+router.get("/friends", getFriends);
 router.post("/signin", signin);
 router.post("/signup", signup);
-router.patch("/update/:username", updateUser);
-router.delete("/:username/friends/:friendUsername", removeFriend);
+router.patch("/update", updateUser);
+router.get("/profile/:username", getUserDetails);
+router.patch("/friend/:friendUsername", toggleFriend);
+router.get("/search", searchUser);
 
 export default router;

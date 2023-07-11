@@ -54,7 +54,7 @@ export default function Submissions(props) {
     const classes = useStyles();
     const { rows, multipleUsers } = props;
     const { isLoading } = useSelector((state) => state.auth);
-    console.log(rows);
+    // console.log(rows);
 
     let columns = [
         (multipleUsers ? { id: 'username', label: 'Username' } : { id: 'oj', label: 'Profile' }),

@@ -3,7 +3,7 @@ import { Card, CardContent, CircularProgress, IconButton, Typography, makeStyles
 import { Stack } from "@mui/material"
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getFriends, removeFriend } from '../../actions/auth';
+import { getFriends, toggleFriend } from '../../actions/auth';
 import StarIcon from '@mui/icons-material/Star';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
 
@@ -50,6 +50,7 @@ export const MyFriends = (props) => {
     
     useEffect(() => {
         dispatch(getFriends(username));
+        console.log(frnds);
         setFrndList(Array(frnds?.length).fill(1));
     }, []);
 
@@ -59,7 +60,7 @@ export const MyFriends = (props) => {
             newArray[index] = newArray[index] === 1 ? 0 : 1;
             return newArray;
         });
-        dispatch(removeFriend(username,frnds[index]));
+        dispatch(toggleFriend(frnds[index]));
     };
 
     if (isLoading) {
@@ -79,7 +80,6 @@ export const MyFriends = (props) => {
         );
     }
 
-
     return (
         <Card elevation={4} className={classes.mainCard} sx={sx} >
             <CardContent>
@@ -87,14 +87,15 @@ export const MyFriends = (props) => {
                     <Typography className={classes.title} variant="h5" >
                         Your Friends
                     </Typography>
-                    {frnds?.map((frnd, index) => (
+                    {frnds?.length>0 ? frnds?.map((frnd, index) => (
                         <Typography key={index} className={classes.details} variant="h6">
-                            {index + 1}. {frnd}&nbsp;
+                            {frnd}&nbsp;
                             <IconButton size='small' style={{ color: "black" }} onClick={() => toggleElement(index)} >
-                                {frndList[index]===1 ? <StarIcon /> : <StarOutlineIcon />}{frndList[index]}
+                                {frndList[index]===1 ? <StarIcon /> : <StarOutlineIcon />}
                             </IconButton>
                         </Typography>
-                    ))}
+                    ))
+                    : <Typography className={classes.details}>Search users and add them as friends! </Typography>}
                 </Stack>
             </CardContent>
         </Card>

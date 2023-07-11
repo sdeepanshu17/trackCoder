@@ -1,4 +1,5 @@
 import { makeStyles } from '@material-ui/core';
+import PropTypes from 'prop-types';
 import {
     Avatar,
     Box,
@@ -44,9 +45,9 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-export const UserProfile = (user) => {
-    const usr = user?.user?.result;
-    // console.log(usr);
+export const UserProfile = (props) => {
+    // const usr = user?.user?.result;
+    const {user} = props;
     const classes = useStyles();
 
     return (
@@ -59,7 +60,7 @@ export const UserProfile = (user) => {
                         flexDirection: 'row',
                     }}
                 >
-                    <Avatar className={classes.icon} alt={usr?.name} src={usr?.imageUrl}>{usr?.name.charAt(0)}</Avatar>
+                    <Avatar className={classes.icon} alt={user?.name}>{user?.name?.charAt(0)}</Avatar>
                     <Box
                         sx={{
                             display: 'flex',
@@ -69,14 +70,19 @@ export const UserProfile = (user) => {
                         }}
                     >
                         <Typography variant="h5" className={classes.name} >
-                            {usr?.name}
+                            {user?.name}
                         </Typography>
                         <Typography className={classes.subText} color="textSecondary" variant="body2" >
-                            @{usr?.username}
+                            @{user?.username}
                         </Typography>
                     </Box>
                 </Box>
             </CardContent>
         </Card>
     )
+};
+
+
+UserProfile.propTypes = {
+    user: PropTypes.object,
 };

@@ -1,9 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom"
-import { getACProfile, getCCProfile, getCFProfile, getCFSubmissions, getLCProfile, logout } from "../../actions/profiles";
-import { useDispatch, useSelector } from "react-redux";
 import { Box, Button, CircularProgress, Container, Grid, Paper, Typography, makeStyles } from "@material-ui/core";
-import { getUserDetails, getUserSubmission } from "../../actions/auth";
 import { ProfileCard } from "./ProfileCard";
 import codeforcesLogo from "../../assets/codeforces-svgrepo-com.svg"
 import leetcodeLogo from "../../assets/leetcode-svgrepo-com.svg"
@@ -11,6 +8,7 @@ import codechefLogo from "../../assets/codechef-svgrepo-com.svg"
 import atcoderLogo from "../../assets/atcoder.png"
 import { UserProfile } from "./UserProfile";
 import Submissions from "./Submissions";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
     loadingPaper: {
@@ -61,40 +59,29 @@ const useStyles = makeStyles((theme) => ({
 
 const User = () => {
     const classes = useStyles();
-    const { user } = useSelector((state) => state.auth);
-    const { cfData, cfProfile, lcProfile, acProfile, isLoading, ccProfile, userSubms } = useSelector((state) => state.profiles);
     const { username } = useParams();
     const history = useNavigate();
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        dispatch(logout());
-        dispatch(getUserDetails(username));
-        dispatch(getUserSubmission(username));
-    }, [username]);
-
-    useEffect(() => {
-        // console.log(user);
-        if (user) {
-            const cfId = user?.result?.codeforces;
-            const lcId = user?.result?.leetcode;
-            const ccId = user?.result?.codechef;
-            const acId = user?.result?.atcoder;
-            if (cfId) {
-                dispatch(getCFProfile(cfId));
-                dispatch(getCFSubmissions(cfId));
-            }
-            if (lcId) {
-                dispatch(getLCProfile(lcId));
-            }
-            if (ccId){
-                dispatch(getCCProfile(ccId));
-            }
-            if (acId){
-                dispatch(getACProfile(acId));
-            }
+    const [isLoading,setIsLoading] = useState(false);
+    const [result,setResult] = useState(false);
+    
+    const fetchData = async () => {
+        try {
+            setIsLoading(true);
+            let obj = await axios.get(`http://localhost:5001/users/profile/${username}`);
+            setResult(obj.data);
+            setIsLoading(false);
+        } catch (error) {
+            setIsLoading(false);
+            console.log(error);
         }
-    }, [user]);
+    }
+
+    useEffect(() => {
+        // dispatch(clearProfiles());
+        // dispatch(getUserDetails(username));
+        // dispatch(getUserSubmission(username));
+        fetchData();
+    }, [username]);
 
     if (isLoading) {
         return <Paper elevation={6} className={classes.loadingPaper}>
@@ -102,7 +89,7 @@ const User = () => {
         </Paper>
     }
 
-    if (!user){
+    if (!result){
         return (
             <Box
                 component="main"
@@ -125,15 +112,14 @@ const User = () => {
     return (
         <Box component="main" sx={{ flexGrow: 1, }} >
             <Container className={classes.mainCont}>
-                <UserProfile user={user} />
+                <UserProfile user={result} />
                 <Grid container spacing={3} >
                     <Grid item xs={12} sm={6} lg={3} >
                         <ProfileCard
                             sx={{ height: '100%' }}
                             OJ="Codeforces"
                             icon={codeforcesLogo}
-                            data={cfProfile}
-                            totQues={cfData.filter((sub) => sub.verdict=="OK").length}
+                            cfData={result.cfProfile}
                         />
                     </Grid>
                     <Grid item xs={12} sm={6} lg={3} >
@@ -141,14 +127,14 @@ const User = () => {
                             sx={{ height: '100%' }}
                             OJ="Leetcode"
                             icon={leetcodeLogo}
-                            lcdata={lcProfile}
+                            lcData={result.lcProfile}
                         />
                     </Grid>
                     <Grid item xs={12} sm={6} lg={3} >
                         <ProfileCard
                             sx={{ height: '100%' }}
                             OJ="Codechef"
-                            ccData={ccProfile}
+                            ccData={result.ccProfile}
                             icon={codechefLogo}
                         />
                     </Grid>
@@ -157,11 +143,11 @@ const User = () => {
                             sx={{ height: '100%' }}
                             OJ="Atcoder"
                             icon={atcoderLogo}
-                            acData={acProfile}
+                            acData={result.acProfile}
                         />
                     </Grid>
                     <Typography className={classes.title}>Recent Submissions</Typography>
-                    <Submissions multipleUsers={false} rows={userSubms} />
+                    <Submissions multipleUsers={false} rows={result.submissions} />
                 </Grid>
             </Container>
         </Box>

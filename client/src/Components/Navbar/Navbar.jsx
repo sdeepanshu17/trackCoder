@@ -130,11 +130,10 @@ function Navbar() {
         setUser(null);
         history("/");
     }
+
     useEffect(() => {
         const token = user?.token;
-
-        
-
+        // console.log(token);
         if (token) {
             const decodedToken = decode(token);
             // setUser(decodedToken);
@@ -144,7 +143,7 @@ function Navbar() {
             }
         }
 
-        // setUser(JSON.parse(localStorage.getItem('profile')));
+        setUser(JSON.parse(localStorage.getItem('profile')));
     }, [location]);
 
     const handleOpenNavMenu = (event) => {
@@ -211,7 +210,7 @@ function Navbar() {
                         <Box sx={{ flexGrow: 0, p: 0 }}>
                             <Tooltip title="Open settings">
                                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                    <Avatar className={classes.icon} alt={user?.result.name} src={user?.result?.imageUrl}>{user?.result.name.charAt(0)}</Avatar>
+                                    <Avatar className={classes.icon} alt={user?.result?.name} src={user?.result?.imageUrl}>{user?.result?.name?.charAt(0)}</Avatar>
                                 </IconButton>
                             </Tooltip>
                             <Menu
@@ -232,8 +231,8 @@ function Navbar() {
                                 onClick={handleCloseUserMenu}
                                 
                             >
-                                <MenuItem onClick={() => history(`/users/${user?.result.username}`)}>
-                                    <Avatar className={classes.icon} alt={user?.result.name}>{user?.result.name.charAt(0)}</Avatar> &nbsp; {user?.result.name}
+                                <MenuItem onClick={() => history(`/users/${user?.result?.username}`)}>
+                                    <Avatar className={classes.icon} alt={user?.result?.name}>{user?.result?.name?.charAt(0)}</Avatar> &nbsp; {user?.result?.name}
                                 </MenuItem>
                                 <Divider />
                                 <MenuItem onClick={() => history("/account")}>

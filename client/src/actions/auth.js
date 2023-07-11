@@ -1,5 +1,6 @@
+import { toast } from "react-toastify";
 import * as api from "../api/userDetails";
-import { AUTH, END_LOADING, START_LOADING, UPDATE, USERDETAILS, SET_USER_SUB, SET_FRND_SUB, SET_FRNDS, REMOVE_FRND } from "../constants/actionTypes";
+import { AUTH, END_LOADING, START_LOADING, UPDATE, SET_USER_SUB, SET_FRND_SUB, SET_FRNDS, SET_USER } from "../constants/actionTypes";
 // import {toast} from 'react-toastify'
 // import 'react-toastify/dist/ReactToastify.css';
 
@@ -14,8 +15,8 @@ export const signin = (formData, history, setErrorMessage) => async (dispatch) =
     } catch (error) {
         dispatch({type: END_LOADING});
         // toast.error(error.response.data.message);
+        // console.log(error);
         setErrorMessage(error.response.data.message);
-        console.log(error);
     }
 }
 
@@ -29,7 +30,7 @@ export const signup = (formData, history, setErrorMessage) => async (dispatch) =
     } catch (error) {
         dispatch({type: END_LOADING});
         setErrorMessage(error.response.data.message);
-        console.log(error);
+        // console.log(error);
     }
 }
 
@@ -37,7 +38,8 @@ export const getUserDetails = (username) => async (dispatch) => {
     try {
         dispatch({type: START_LOADING});
         const { data } = await api.getUserDetails(username);
-        dispatch({ type: USERDETAILS, data });
+        console.log(data);
+        dispatch({ type: SET_USER, data });
         dispatch({type: END_LOADING});
     } catch (error) {
         dispatch({type: END_LOADING});
@@ -45,15 +47,16 @@ export const getUserDetails = (username) => async (dispatch) => {
     }
 }
 
-export const updateUserDetails = (username, formData, history) => async (dispatch) => {
+export const updateUserDetails = (formData ) => async (dispatch) => {
     try {
         dispatch({type: START_LOADING});
-        const { data } = await api.updateUserDetails(username, formData);
+        const { data } = await api.updateUserDetails(formData);
         dispatch({ type: UPDATE, data });
         dispatch({type: END_LOADING});
-        history(0);
+        toast.success("Profile Updated!");
     } catch (error) {
         dispatch({type: END_LOADING});
+        toast.error(error.response.data.message);
         console.log(error);
     }
 }
@@ -89,15 +92,17 @@ export const getFriends = (username) => async(dispatch) => {
         dispatch({ type: SET_FRNDS, payload: data?.result });
         dispatch({type: END_LOADING});
     } catch (error) {
+        dispatch({type: END_LOADING});
         console.log(error);
     }
 }
 
-export const removeFriend = (username,friendUsername) => async (dispatch) => {
+export const toggleFriend = (friendUsername) => async (dispatch) => {
     try {
         // dispatch({type: START_LOADING});
-        const {data} = await api.removeFriend(username,friendUsername);
-        dispatch({ type: REMOVE_FRND, payload: data?.result });
+        await api.toggleFriend(friendUsername);
+        const res = await api.friends();
+        dispatch({ type: SET_FRNDS, payload: res?.data?.result });
         // dispatch({type: END_LOADING});
     } catch (error) {
         console.log(error);

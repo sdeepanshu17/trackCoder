@@ -34,23 +34,20 @@ const useStyles = makeStyles(()=>({
 }))
 
 export const ProfileCard = (props) => {
-    const { OJ, lcdata, data, ccData, acData, totQues, sx, icon } = props;
+    const { OJ, lcData, cfData, ccData, acData, sx, icon } = props;
     const classes = useStyles();
-    let profile, profileLink, quesCt, accuracy;
+    let profileLink;
     
-    if (data==null && lcdata==null && ccData==null && acData==null){
+    if (cfData==null && lcData==null && ccData==null && acData==null){
         return (
             <EmptyCard icon={icon} sx={sx} />
         )
     }
     if (OJ=="Codeforces"){
-        profile = data[0];
-        profileLink = `https://codeforces.com/profile/${profile?.handle}`
+        profileLink = `https://codeforces.com/profile/${cfData?.handle}`
     }
     if (OJ=="Leetcode"){
-        quesCt = lcdata?.matchedUser?.submitStats?.acSubmissionNum[0]?.count;
-        accuracy = ((lcdata?.matchedUser?.submitStats?.acSubmissionNum[0]?.count)/(lcdata?.matchedUser?.submitStats?.acSubmissionNum[0]?.submissions))*100;
-        profileLink = `https://leetcode.com/${lcdata?.matchedUser?.username}`;
+        profileLink = `https://leetcode.com/${lcData?.matchedUser?.username}`;
     }
     if (OJ=="Codechef"){
         profileLink = `https://codechef.com/users/${ccData?.username}`;
@@ -71,14 +68,14 @@ export const ProfileCard = (props) => {
                     >
                         <Stack>
                             <Typography component={Link} to={profileLink} target={"_blank"} className={classes.username} color="textSecondary" variant="overline" >
-                                {OJ==="Codeforces" && ( profile?.handle || "NOT CONNECTED" ) }
-                                {OJ==="Leetcode" && (lcdata?.matchedUser?.username || "NOT CONNECTED") }
+                                {OJ==="Codeforces" && ( cfData?.username || "NOT CONNECTED" ) }
+                                {OJ==="Leetcode" && (lcData?.username || "NOT CONNECTED") }
                                 {OJ==="Codechef" && (ccData?.username  || "NOT CONNECTED" ) }
                                 {OJ==="Atcoder" && (acData?.username  || "NOT CONNECTED") }
                             </Typography>
                         <Typography className={classes.details} variant="h6">
-                            {OJ==="Codeforces" ? `Rating: ${profile?.rating}` : null}
-                            {OJ==="Leetcode" ? `Rating: ${Math.round(lcdata?.userContestRanking?.rating)}` : null}
+                            {OJ==="Codeforces" ? `Rating: ${cfData?.rating}` : null}
+                            {OJ==="Leetcode" ? `Rating: ${Math.round(lcData?.rating)}` : null}
                             {OJ==="Codechef" ? `Rating: ${ccData?.rating}` : null}
                             {OJ==="Atcoder" ? `Rating: ${acData?.rating}` : null}
                         </Typography>
@@ -89,20 +86,20 @@ export const ProfileCard = (props) => {
                         </Icon>
                     </Stack>
                         <Typography className={classes.details} variant="h6">
-                            {OJ==="Codeforces" ? `Rank : ${capitalize(profile?.rank)}` : null}
-                            {OJ==="Leetcode" ? `Rank: ${lcdata?.userContestRanking?.globalRanking}` : null}
+                            {OJ==="Codeforces" ? `Rank : ${capitalize(cfData?.rank)}` : null}
+                            {OJ==="Leetcode" ? `Rank: ${lcData?.globalRank}` : null}
                             {OJ==="Codechef" ? `Rank: ${ccData?.globalRank}` : null}
                             {OJ==="Atcoder" ? `Rank: ${acData?.globalRank}` : null}
                         </Typography>
                         <Typography className={classes.details} variant="h6">
-                            {OJ==="Codeforces" && `Max Rating : ${profile?.maxRating}`}
-                            {OJ==="Leetcode" ? `Problems Solved: ${quesCt}` : null}
+                            {OJ==="Codeforces" && `Max Rating : ${cfData?.maxRating}`}
+                            {OJ==="Leetcode" ? `Problems Solved: ${lcData?.totQues}` : null}
                             {OJ==="Codechef" && `Max Rating : ${ccData?.maxRating}`}
                             {OJ==="Atcoder" && `Max Rating : ${acData?.maxRating}`}
                         </Typography>
                         <Typography className={classes.details} variant="h6">
-                            {OJ==="Codeforces" ? `Problems Solved: ${totQues}` : null}
-                            {OJ==="Leetcode" ? `Accuracy: ${accuracy.toFixed(2)}%` : null}
+                            {OJ==="Codeforces" ? `Problems Solved: ${cfData?.totQues}` : null}
+                            {OJ==="Leetcode" ? `Accuracy: ${lcData?.accuracy.toFixed(2)}%` : null}
                             {OJ==="Codechef" ? `Problems Solved: ${ccData?.fullySolvedCount}` : null}
                             {OJ==="Atcoder" ? `Problems Solved: ${acData?.fullySolvedCount}` : null}
                         </Typography>
@@ -116,10 +113,9 @@ ProfileCard.propTypes = {
     icon: PropTypes.string,
     OJ: PropTypes.string,
     value: PropTypes.string,
-    lcdata: PropTypes.object,
+    lcData: PropTypes.object,
     ccData: PropTypes.object,
     acData: PropTypes.object,
-    data: PropTypes.array,
-    totQues: PropTypes.number,
+    cfData: PropTypes.object,
     sx: PropTypes.object
 };

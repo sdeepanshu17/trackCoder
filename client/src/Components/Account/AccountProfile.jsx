@@ -31,7 +31,7 @@ const useStyles = makeStyles(() => ({
 }))
 
 export const AccountProfile = (user) =>{ 
-    const usr = user.user.result;
+    const usr = user?.user?.result;
     // console.log(usr);
     const classes = useStyles();
 
@@ -45,7 +45,7 @@ export const AccountProfile = (user) =>{
                     flexDirection: 'column'
                 }}
             >
-                <Avatar className={classes.icon} alt={usr?.name} src={usr?.imageUrl} onClick={() => history("/account")}>{usr?.name.charAt(0)}</Avatar>
+                <Avatar className={classes.icon} alt={usr?.name} src={usr?.imageUrl} onClick={() => history("/account")}>{usr?.name?.charAt(0)}</Avatar>
                 <Typography  variant="h5" className={classes.name} >
                     {usr?.name}
                 </Typography>

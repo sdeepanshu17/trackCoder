@@ -1,7 +1,10 @@
 import PropTypes from 'prop-types';
-import { Card, CardContent, Typography, makeStyles } from '@material-ui/core';
+import { Card, CardContent, IconButton, InputAdornment, TextField, Typography, makeStyles } from '@material-ui/core';
 import { Stack } from "@mui/material"
-
+import { useState } from 'react';
+import axios from 'axios';
+import SearchIcon from '@mui/icons-material/Search';
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles(() => ({
     mainCard: {
@@ -27,13 +30,40 @@ const useStyles = makeStyles(() => ({
     details: {
         fontFamily: 'Plus Jakarta Sans',
         fontSize: '18px',
-        fontWeight: '400'
+        fontWeight: '400',
+        textAlign: 'center',
+        textDecoration: 'none',
+        color: 'black',
+        '&:hover': {
+            textDecoration: 'underline',
+        },
     }
 }))
 
 export const SearchUser = (props) => {
     const { sx, style } = props;
     const classes = useStyles();
+
+    const [searchQuery, setSearchQuery] = useState('');
+    const [users, setUsers] = useState([]);
+
+    const handleChange = async (e) => {
+        setSearchQuery(e.target.value);
+
+        const res = await axios.get(`http://localhost:5001/users/search?user=${searchQuery}`);
+        if (searchQuery=='') {
+            setUsers([])
+        }
+        else setUsers(res.data);
+    };
+    const handleSearch = async (e) => {
+        e.preventDefault();
+        // Call the API endpoint with the search query
+        const res = await axios.get(`http://localhost:5001/users/search?user=${searchQuery}`);
+        console.log(res);
+        //   onSearch(response.data);
+        setUsers(res.data);
+    };
 
     return (
         <Card elevation={4} className={classes.mainCard} sx={sx} style={style} >
@@ -42,18 +72,36 @@ export const SearchUser = (props) => {
                     <Typography className={classes.title} variant="h5" >
                         Search User
                     </Typography>
-                    <Typography className={classes.comingSoon} variant="h6">
-                        Coming Soon!
-                    </Typography>
-                    {/* <Typography className={classes.details} variant="h6">
-                        Contest 2
-                    </Typography>
-                    <Typography className={classes.details} variant="h6">
-                        Contest 3
-                    </Typography>
-                    <Typography className={classes.details} variant="h6">
-                        Contest 4
-                    </Typography> */}
+                    <form style={{display: 'flex', justifyContent: 'center', marginBottom: 15}} onSubmit={handleSearch}>
+                        {/* <Input type='text' value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder='Search Users' /> */}
+                        <TextField
+                            value={searchQuery}
+                            onChange={handleChange}
+                            placeholder='Search Users'
+                            style={{width: "75%"}}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton type='submit'>
+                                            <SearchIcon />
+                                        </IconButton>
+                                    </InputAdornment>
+                                ),
+                            }}
+                        />
+                    </form>
+                    {users.length > 0 ? users.map((user, index) => {
+                        const url = `/users/${user.username}`;
+                        return  (
+                        <Typography component={Link} to={url} key={index} className={classes.details} variant="h6">
+                            {user.username}
+                        </Typography>
+                    )})
+                        :
+                        <Typography className={classes.comingSoon} variant="h6">
+                            No users found
+                        </Typography>
+                    }
                 </Stack>
             </CardContent>
         </Card>

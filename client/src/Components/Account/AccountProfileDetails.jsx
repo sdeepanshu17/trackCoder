@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const AccountProfileDetails = (user) => {
-    const initUser = user.user.result;
+    const initUser = user?.user?.result;
     const [formData, setFormData] = useState(initUser);
     const classes = useStyles();
     const dispatch = useDispatch();
@@ -67,7 +67,7 @@ export const AccountProfileDetails = (user) => {
 
     const submitHandler = (e) => {
         e.preventDefault();
-        dispatch(updateUserDetails(user.user.result.username, formData, history));
+        dispatch(updateUserDetails(formData, history));
     }
 
     return (
@@ -81,7 +81,7 @@ export const AccountProfileDetails = (user) => {
                 /> */}
             <CardContent sx={{ pt: 0 }}>
             <Grid container spacing={2}>
-                <Input name="name" label="Name" handleChange={handleChange} value={formData.name} required={true} />
+                <Input name="name" label="Name" handleChange={handleChange} value={formData?.name} required={true} />
                 <Input name="codeforces" label="Codeforces Id" handleChange={handleChange} value={formData?.codeforces} required={false} />
                 <Input name="leetcode" label="Leetcode Id" handleChange={handleChange} value={formData?.leetcode} required={false} />
                 <Input name="codechef" label="Codechef Id" handleChange={handleChange} value={formData?.codechef} required={false} />

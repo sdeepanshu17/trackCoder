@@ -83,7 +83,7 @@ export const getACProfile = (acUsername) => async (dispatch) => {
     }
 }
 
-export const logout = () =>async(dispatch) => {
+export const clearProfiles = () => async(dispatch) => {
     try {
         dispatch({ type: CLEAR_PROFILES, data: null });
     } catch (error) {

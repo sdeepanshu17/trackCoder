@@ -61,7 +61,7 @@ const Dashboard = () => {
             <UpcomingContests sx={{ height: '100%'}} style={{}} />
           </Grid>
           <Grid item xs={12} sm={12} md={12} lg={12} >
-            <FriendsSubmisions username={user.result.username} sx={{ height: '100%' }} />
+            <FriendsSubmisions username={user?.result?.username} sx={{ height: '100%' }} />
           </Grid>
         </Grid>
       </Container>

@@ -7,7 +7,7 @@ export default (state={authData: null, user: null, isLoading: false},action) => 
         case END_LOADING:
             return {...state,isLoading: false,};
         case AUTH:
-            console.log(action?.data);
+            // console.log(action?.data);
             localStorage.setItem('profile',JSON.stringify({...action?.data}));
             return {...state, authData: action?.data};
         case LOGOUT:

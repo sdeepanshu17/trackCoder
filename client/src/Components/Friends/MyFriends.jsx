@@ -1,16 +1,19 @@
 import PropTypes from 'prop-types';
-import { Card, CardContent, CircularProgress, IconButton, Typography, makeStyles } from '@material-ui/core';
+import { Card, CardContent, IconButton, Typography, makeStyles } from '@material-ui/core';
 import { Stack } from "@mui/material"
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getFriends, toggleFriend } from '../../actions/auth';
+import { toggleFriend } from '../../actions/auth';
 import StarIcon from '@mui/icons-material/Star';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
+import { Link, useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles(() => ({
     mainCard: {
         borderRadius: 20,
         minHeight: '30vh',
+        display: 'flex',
+        justifyContent: 'center',
     },
     title: {
         fontFamily: 'Titillium Web',
@@ -35,24 +38,37 @@ const useStyles = makeStyles(() => ({
         display: 'flex',
         justifyContent: 'center',
         textAlign: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        textDecoration: 'none',
+        color: 'black',
+        '&:hover': {
+            textDecoration: 'underline',
+        },
     }
 }))
 
 export const MyFriends = (props) => {
-    const { sx, style, username } = props;
+    const { sx } = props;
     const classes = useStyles();
-    
-    const { frnds, isLoading } = useSelector((state) => state.profiles);
+    const {authData} = useSelector((state)=>state.auth);
+    const history = useNavigate();
+
+    // const { frnds, isLoading } = useSelector((state) => state.profiles);
+    const [frnds,setFrnds] = useState(authData?.result?.friends);
     const dispatch = useDispatch();
     const [frndList, setFrndList] = useState(Array(frnds?.length).fill(1));
-    console.log(frndList);
+    // console.log(frndList);
     
     useEffect(() => {
-        dispatch(getFriends(username));
-        console.log(frnds);
+        if(!authData){
+            history("/");
+        }
+        setFrnds(authData?.result?.friends);
+    }, [authData]);
+    
+    useEffect(()=>{
         setFrndList(Array(frnds?.length).fill(1));
-    }, []);
+    },[frnds])
 
     const toggleElement = (index) => {
         setFrndList((prevArray) => {
@@ -63,22 +79,22 @@ export const MyFriends = (props) => {
         dispatch(toggleFriend(frnds[index]));
     };
 
-    if (isLoading) {
-        return (
-            <Card elevation={4} className={classes.mainCard} sx={sx} style={style} >
-                <CardContent>
-                    <Stack>
-                        <Typography className={classes.title} variant="h5" >
-                            Your Friends
-                        </Typography>
-                        <Typography className={classes.comingSoon} variant="h6">
-                            <CircularProgress size='4em' />
-                        </Typography>
-                    </Stack>
-                </CardContent>
-            </Card>
-        );
-    }
+    // if (isLoading) {
+    //     return (
+    //         <Card elevation={4} className={classes.mainCard} sx={sx} style={style} >
+    //             <CardContent>
+    //                 <Stack>
+    //                     <Typography className={classes.title} variant="h5" >
+    //                         Your Friends
+    //                     </Typography>
+    //                     <Typography className={classes.comingSoon} variant="h6">
+    //                         <CircularProgress size='4em' />
+    //                     </Typography>
+    //                 </Stack>
+    //             </CardContent>
+    //         </Card>
+    //     );
+    // }
 
     return (
         <Card elevation={4} className={classes.mainCard} sx={sx} >
@@ -87,14 +103,18 @@ export const MyFriends = (props) => {
                     <Typography className={classes.title} variant="h5" >
                         Your Friends
                     </Typography>
-                    {frnds?.length>0 ? frnds?.map((frnd, index) => (
-                        <Typography key={index} className={classes.details} variant="h6">
-                            {frnd}&nbsp;
+                    {frnds?.length>0 ? frnds?.map((frnd, index) => {
+                        const url = `/users/${frnd}`;
+                        return (
+                        <div style={{display: 'flex', justifyContent: 'center',}} key={index}>
+                            <Typography component={Link} to={url} className={classes.details} variant="h6">
+                                {frnd}&nbsp;
+                            </Typography>
                             <IconButton size='small' style={{ color: "black" }} onClick={() => toggleElement(index)} >
                                 {frndList[index]===1 ? <StarIcon /> : <StarOutlineIcon />}
                             </IconButton>
-                        </Typography>
-                    ))
+                        </div>
+                    )})
                     : <Typography className={classes.details}>Search users and add them as friends! </Typography>}
                 </Stack>
             </CardContent>

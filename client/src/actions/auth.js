@@ -38,7 +38,7 @@ export const getUserDetails = (username) => async (dispatch) => {
     try {
         dispatch({type: START_LOADING});
         const { data } = await api.getUserDetails(username);
-        console.log(data);
+        // console.log(data);
         dispatch({ type: SET_USER, data });
         dispatch({type: END_LOADING});
     } catch (error) {
@@ -100,9 +100,9 @@ export const getFriends = (username) => async(dispatch) => {
 export const toggleFriend = (friendUsername) => async (dispatch) => {
     try {
         // dispatch({type: START_LOADING});
-        await api.toggleFriend(friendUsername);
-        const res = await api.friends();
-        dispatch({ type: SET_FRNDS, payload: res?.data?.result });
+        const {data} = await api.toggleFriend(friendUsername);
+        // console.log(data);
+        dispatch({ type: UPDATE, data});
         // dispatch({type: END_LOADING});
     } catch (error) {
         console.log(error);

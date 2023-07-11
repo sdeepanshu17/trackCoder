@@ -1,4 +1,4 @@
-import { CLEAR_PROFILES, END_LOADING, SET_AC_PROF, SET_CC_PROF, SET_CF_PROF, SET_CF_SUB, SET_FRNDS, SET_FRND_SUB, SET_LC_PROF, SET_LC_SUB, SET_USER, SET_USER_SUB, START_LOADING } from "../constants/actionTypes";
+import { CLEAR_PROFILES, END_LOADING, SET_AC_PROF, SET_CC_PROF, SET_CF_PROF, SET_CF_SUB, SET_FRND_SUB, SET_LC_PROF, SET_LC_SUB, SET_USER, SET_USER_SUB, START_LOADING } from "../constants/actionTypes";
 
 export default (state={cfProfile: null, cfData: [], lcProfile: null, lcData: [], ccProfile: null, acProfile: null, userSubms: [], frndsSubms: [], frnds: [], user: null, isLoading: false},action) => {
     switch (action.type) {
@@ -35,9 +35,6 @@ export default (state={cfProfile: null, cfData: [], lcProfile: null, lcData: [],
         case SET_FRND_SUB:
             // console.log(action.payload);
             return {...state, frndsSubms: action.payload};
-        case SET_FRNDS:
-            console.log(action.payload);
-            return {...state, frnds: action.payload};
         default:
             return state;
     }

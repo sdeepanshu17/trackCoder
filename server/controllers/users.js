@@ -247,22 +247,28 @@ export const toggleFriend = async (req, res) => {
 
     try {
         const decodedData = jwt.verify(token, secret);
+        const username = decodedData?.username;
         const user = await User.findOne({ username: decodedData?.username });
         if (!user) return res.status(404).json({ message: 'User not found!' });
+
 
         const { friends } = user;
         const friendIndex = friends.indexOf(friendUsername);
 
+        const { leetcode, codechef, codeforces, atcoder, name } = user;
+        
         if (friendIndex === -1) {
-            // Friend is not in the user's friends list, add the friend
             friends.push(friendUsername);
             await user.save();
-            res.json({ message: 'Friend added successfully' });
+            const newUser = { name, username, leetcode, codechef, codeforces, atcoder, friends };
+            const token = jwt.sign({ username }, secret, { expiresIn: "1h" });
+            res.status(200).json({ result: newUser, token, message: 'Friend added successfully' });
         } else {
-            // Friend is already in the user's friends list, remove the friend
             friends.splice(friendIndex, 1);
             await user.save();
-            res.json({ message: 'Friend removed successfully' });
+            const newUser = { name, username, leetcode, codechef, codeforces, atcoder, friends };
+            const token = jwt.sign({ username }, secret, { expiresIn: "1h" });
+            res.status(200).json({ result: newUser, token, message: 'Friend removed successfully' });
         }
     } catch (error) {
         if (error.name === 'JsonWebTokenError') {
@@ -368,8 +374,25 @@ export const getUserDetails = async (req, res) => {
             index++;
         }
 
-        const resultObj = { name, username, cfProfile, lcProfile, acProfile, ccProfile, submissions: ans[index].data.result}
+        let submissions = sortByOjProperty(ans[index].data.result);
+
+        const resultObj = { name, username, cfProfile, lcProfile, acProfile, ccProfile, submissions}
         res.status(200).json(resultObj);
     } catch (error) {
+    }
+}
+
+export const isFriend = async(req,res) => {
+    try{
+        const {username} = req.params;
+        const {user} = req;
+        const {friends} = user;
+        if(friends.includes(username)){
+            res.status(200).json({isFriend: true});
+        }else{
+            res.status(200).json({isFriend: false});
+        }
+    }catch(error){
+        res.status(500).json({error: 'Something went wrong'});
     }
 }

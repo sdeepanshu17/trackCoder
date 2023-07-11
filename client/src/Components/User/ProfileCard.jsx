@@ -87,7 +87,7 @@ export const ProfileCard = (props) => {
                     </Stack>
                         <Typography className={classes.details} variant="h6">
                             {OJ==="Codeforces" ? `Rank : ${capitalize(cfData?.rank)}` : null}
-                            {OJ==="Leetcode" ? `Rank: ${lcData?.globalRank}` : null}
+                            {OJ==="Leetcode" ? `Rank: ${lcData?.rank}` : null}
                             {OJ==="Codechef" ? `Rank: ${ccData?.globalRank}` : null}
                             {OJ==="Atcoder" ? `Rank: ${acData?.globalRank}` : null}
                         </Typography>

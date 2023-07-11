@@ -16,5 +16,5 @@ export const getUserDetails = (username) => API.get(`/profile/${username}`);
 export const updateUserDetails = (formData) => API.patch(`/update`, formData);
 export const userSubmissions = (username) => API.get(`/submissions/${username}`);
 export const friendsSubmissions = () => API.get(`/friendsubmissions`);
-export const friends = () => API.get(`/friends`);
+export const friends = () => API.get(`/friends/username`);
 export const toggleFriend = (friendUsername) => API.patch(`/friend/${friendUsername}`);

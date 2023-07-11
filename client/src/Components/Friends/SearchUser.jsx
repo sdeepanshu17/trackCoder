@@ -60,7 +60,7 @@ export const SearchUser = (props) => {
         e.preventDefault();
         // Call the API endpoint with the search query
         const res = await axios.get(`http://localhost:5001/users/search?user=${searchQuery}`);
-        console.log(res);
+        // console.log(res);
         //   onSearch(response.data);
         setUsers(res.data);
     };

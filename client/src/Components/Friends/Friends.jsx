@@ -1,8 +1,6 @@
 import { Box, Container, Grid, Typography, makeStyles } from '@material-ui/core';
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { FriendsSubmisions } from '../Dashboard/FriendsSubmissions';
-import { UpcomingContests } from '../Dashboard/UpcomingContests';
 import { SearchUser } from './SearchUser';
 import { MyFriends } from './MyFriends';
 

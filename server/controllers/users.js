@@ -8,6 +8,7 @@ import cheerio from "cheerio";
 dotenv.config();
 
 const secret = process.env.SECRET; //secret key for the token generation
+const BASE_URL = process.env.BASE_URL;
 
 export const signin = async (req, res) => {
     const { username, password } = req.body;
@@ -188,7 +189,7 @@ export const getFriendsSubmissions = async (req, res) => {
         const friends = user.friends;
         let submissions = [];
         for (let friend of friends) {
-            const API = axios.create({ baseURL: 'http://localhost:5001/' });
+            const API = axios.create({ baseURL: BASE_URL });
             let { data } = await API.get(`/users/submissions/${friend}`);
             submissions = submissions.concat(data.result);
         }
@@ -322,7 +323,7 @@ export const getUserDetails = async (req, res) => {
         if (codechef) {
             apiCalls.push(axios.get(`https://www.codechef.com/users/${codechef}`));
         }
-        apiCalls.push(axios.get(`http://localhost:5001/users/submissions/${username}`));
+        apiCalls.push(axios.get(`${BASE_URL}/users/submissions/${username}`));
         
         const ans = await Promise.all(apiCalls);
         let cfProfile = null;

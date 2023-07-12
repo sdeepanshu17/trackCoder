@@ -1,6 +1,5 @@
 import { Grid,  TextField } from '@material-ui/core'
 
-
 const Input = ({name, handleChange, label, autoFocus, type, required, half, value}) => {
   return (
     <Grid xs={12} sm={half ? 6 : 12} item={true} >
@@ -18,4 +17,4 @@ const Input = ({name, handleChange, label, autoFocus, type, required, half, valu
   )
 }
 
-export default Input
+export default Input;

@@ -9,6 +9,7 @@ import atcoderLogo from "../../assets/atcoder.png"
 import { UserProfile } from "./UserProfile";
 import Submissions from "./Submissions";
 import axios from "axios";
+import { BASE_URL } from "../../constants/api";
 
 const useStyles = makeStyles((theme) => ({
     loadingPaper: {
@@ -67,7 +68,7 @@ const User = () => {
     const fetchData = async () => {
         try {
             setIsLoading(true);
-            let obj = await axios.get(`http://localhost:5001/users/profile/${username}`);
+            let obj = await axios.get(`${BASE_URL}/users/profile/${username}`);
             setResult(obj.data);
             setIsLoading(false);
         } catch (error) {

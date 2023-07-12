@@ -5,6 +5,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import SearchIcon from '@mui/icons-material/Search';
 import { Link } from "react-router-dom";
+import { BASE_URL } from '../../constants/api';
 
 const useStyles = makeStyles(() => ({
     mainCard: {
@@ -49,8 +50,8 @@ export const SearchUser = (props) => {
 
     const handleChange = async (e) => {
         setSearchQuery(e.target.value);
-
-        const res = await axios.get(`http://localhost:5001/users/search?user=${searchQuery}`);
+        
+        const res = await axios.get(`${BASE_URL}/users/search?user=${searchQuery}`);
         if (searchQuery=='') {
             setUsers([])
         }
@@ -59,7 +60,7 @@ export const SearchUser = (props) => {
     const handleSearch = async (e) => {
         e.preventDefault();
         // Call the API endpoint with the search query
-        const res = await axios.get(`http://localhost:5001/users/search?user=${searchQuery}`);
+        const res = await axios.get(`${BASE_URL}/users/search?user=${searchQuery}`);
         // console.log(res);
         //   onSearch(response.data);
         setUsers(res.data);

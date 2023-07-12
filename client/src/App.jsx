@@ -10,6 +10,7 @@ import Dashboard from "./Components/Dashboard/Dashboard";
 import User from "./Components/User/User";
 import Account from "./Components/Account/Account";
 import Friends from "./Components/Friends/Friends";
+import NotFound from "./Components/NotFound/NotFound";
 
 const useStyles = makeStyles({
   root: {
@@ -35,6 +36,7 @@ function App() {
             <Route path="/users/:username" exact element={<User />} />
             <Route path="/account" exact element={<Account />} />
             <Route path="/friends" exact element={<Friends />} />
+            <Route path='*' element={<NotFound />}/>
           </Routes>
         </Container>
       </Container>

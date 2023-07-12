@@ -111,6 +111,15 @@ export default function Submissions(props) {
                         </TableRow>
                     </TableHead>
                     <TableBody>
+                    {rows?.length===0 && 
+                            <TableRow hover role="checkbox" tabIndex={-1}>
+                                <TableCell colSpan={5} align="center">
+                                    <Typography variant="h6" color="textSecondary" component="p">
+                                        {multipleUsers ? "Add friends to see their submissions" : "No Submissions"}
+                                    </Typography>
+                                </TableCell>
+                            </TableRow>
+                    }
                         {rows
                             ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                             .map((row) => {

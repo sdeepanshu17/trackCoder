@@ -44,10 +44,10 @@ export const ProfileCard = (props) => {
         )
     }
     if (OJ=="Codeforces"){
-        profileLink = `https://codeforces.com/profile/${cfData?.handle}`
+        profileLink = `https://codeforces.com/profile/${cfData?.username}`
     }
     if (OJ=="Leetcode"){
-        profileLink = `https://leetcode.com/${lcData?.matchedUser?.username}`;
+        profileLink = `https://leetcode.com/${lcData?.username}`;
     }
     if (OJ=="Codechef"){
         profileLink = `https://codechef.com/users/${ccData?.username}`;

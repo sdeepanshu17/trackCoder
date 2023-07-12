@@ -26,7 +26,7 @@ export const signup = (formData, history, setErrorMessage) => async (dispatch) =
         const { data } = await api.signup(formData);
         dispatch({ type: AUTH, data });
         dispatch({type: END_LOADING});
-        history("/");
+        history("/account");
     } catch (error) {
         dispatch({type: END_LOADING});
         setErrorMessage(error.response.data.message);

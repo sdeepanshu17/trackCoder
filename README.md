@@ -17,7 +17,9 @@
 ## About The Project
 
 <br /><br />
-![HomePage]
+<img src="/client/src/assets/HomePage.png" />
+<br /><br />
+<img src="/client/src/assets/UserProfile.png" />
 <br /><br />
 
 trackCoder is a one-stop solution to monitor all your competitive coding profiles. One can also add friends and track their profiles as well.

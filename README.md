@@ -43,23 +43,23 @@ trackCoder is a one-stop solution to monitor all your competitive coding profile
   <li>Click on the Get Started button on the website homepage. </li>
   <li>
     Create an account. <br /> <br />
-    ![GettingStarted]
+    <img src="/client/src/assets/GetStarted.png" />
     <br /> <br />
   </li>
 
   <li>
     Add your competitive profile usernames. <br /> <br />
-    ![Profile]
+    <img src="/client/src/assets/Profiles.png" />
     <br /> <br />
   </li>
   <li>
     Go to the Friends page and add friends. <br /> <br />
-    ![Friends]
+    <img src="/client/src/assets/Friends.png" />
     <br /> <br />
   </li>
   <li>
     Go to Dashboard. <br /> <br />
-    ![Dashboard]
+    <img src="/client/src/assets/Dashboard.png" />
     <br /> <br />
   </li>
 </ol>

@@ -10,7 +10,8 @@ import { Link, useNavigate } from 'react-router-dom';
 const useStyles = makeStyles(() => ({
     mainCard: {
         borderRadius: 20,
-        minHeight: '30vh'
+        height: '30vh',
+        overflow: 'auto'
     },
     title: {
         fontFamily: 'Titillium Web',
@@ -46,7 +47,7 @@ export const LatestProblems = (props) => {
     const classes = useStyles();
     const [isLoading,setIsLoading] = useState(false);
     const [result,setResult] = useState(false);
-    const history = useNavigate();
+    // const history = useNavigate();
 
     const fetchLatestProblems = async () => {
         try {
@@ -89,7 +90,7 @@ export const LatestProblems = (props) => {
                         Latest Problems
                     </Typography>
                     {
-                        result && result.slice(0,5).map((problem) => (
+                        result && result.map((problem) => (
                             <Typography component={Link} to={problem?.url} target='_blank' key={problem?.id} className={classes.details} variant="h6">
                                 {problem?.name}
                                 {/* <IconButton size='small' style={{ color: "black"}} onClick={() => history("/")}> <LaunchIcon style={{ height: '20px', width: '20px' }} /> </IconButton> */}

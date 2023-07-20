@@ -11,7 +11,6 @@ const useStyles = makeStyles(() => ({
     mainCard: {
         borderRadius: 20,
         height: '30vh',
-        overflow: 'auto'
     },
     title: {
         fontFamily: 'Titillium Web',
@@ -76,8 +75,8 @@ export const LatestProblems = (props) => {
                     <Typography className={classes.comingSoon} variant="h6">
                         <CircularProgress size='3em' />
                     </Typography>
-                    </Stack>
-                </CardContent>
+                </Stack>
+            </CardContent>
         </Card>
         )
     }
@@ -89,6 +88,7 @@ export const LatestProblems = (props) => {
                     <Typography className={classes.title} variant="h5" >
                         Latest Problems
                     </Typography>
+                    <Stack style={{ height:'20vh', overflow: 'auto'}}>
                     {
                         result && result.map((problem) => (
                             <Typography component={Link} to={problem?.url} target='_blank' key={problem?.id} className={classes.details} variant="h6">
@@ -97,6 +97,7 @@ export const LatestProblems = (props) => {
                             </Typography>
                         ))
                     }
+                    </Stack>
                     {/* <Typography className={classes.details} variant="h6">
                         More...
                     </Typography> */}

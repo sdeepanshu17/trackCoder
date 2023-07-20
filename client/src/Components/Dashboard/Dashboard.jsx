@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { UpcomingContests } from './UpcomingContests';
 import { FriendsSubmisions } from './FriendsSubmissions';
+import { LatestProblems } from './LatestProblems';
 // import { useDispatch, useSelector } from 'react-redux';
 // import { getFriendsSubmissions } from '../../actions/auth';
 
@@ -58,7 +59,8 @@ const Dashboard = () => {
             <UpcomingContests sx={{ height: '100%'}} style={{marginBottom: 20}} />
           </Grid>
           <Grid item xs={12} sm={12} md={6} lg={6} >
-            <UpcomingContests sx={{ height: '100%'}} style={{}} />
+            {/* <UpcomingContests sx={{ height: '100%'}} style={{}} /> */}
+            <LatestProblems sx={{ height: '100%'}} style={{}} />
           </Grid>
           <Grid item xs={12} sm={12} md={12} lg={12} >
             <FriendsSubmisions username={user?.result?.username} sx={{ height: '100%' }} />
